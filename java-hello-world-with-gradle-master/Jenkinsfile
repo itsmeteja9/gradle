@@ -1,32 +1,25 @@
 pipeline {
-    agent any
-    environment {
-        // Set JAVA_HOME to the JDK 17 installation path
-        JAVA_HOME = '/path/to/your/jdk-17'  // Adjust the path based on your JDK installation
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"  // Make sure Java 17 is in the PATH
-    }
-    stages {
-        stage('Clean Workspace') {
-            steps {
-                deleteDir()  // Clean the workspace
-            }
-        }
-        stage('Clone Project') {
-            steps {
-                checkout scm  // Checkout the source code
-            }
-        }
-        stage('Build') {
-            steps {
-                // Run the Gradle build using the configured JDK 17
-                sh './gradlew clean build'
-            }
-            post {
-                always {
-                    // Send build info to Jira (if applicable)
-                    jiraSendBuildInfo site: 'bashsquad.atlassian.net'
-                }
-            }
-        }
-    }
-}
+     agent any
+     stages {
+         stage('Clean Workspace') {
+             steps {
+                  deleteDir()                  
+             }
+         }
+         stage('Clone Project') {
+             steps {                  
+                  checkout scm                  
+             }
+         }
+         stage('Build') {
+             steps {                  
+                  sh './gradlew clean build'
+             }              
+             post {
+                 always {
+                     jiraSendBuildInfo site: 'bashsquad.atlassian.net'
+                 }
+             }
+         }
+     }
+ }
